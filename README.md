@@ -10,7 +10,7 @@ In this course we'll learn:
 
 ### Import, export and data manipulation
 
--   import and export common formats (csv, xlsx, txt, …);
+-   import and export data in common formats (\*.csv, \*.xls, \*.txt, …);
 -   tools for intuitive data manipulation (e.g., dplyr and tidyr).
 
 ### Visualization
