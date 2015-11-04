@@ -20,7 +20,7 @@ In this course we'll learn:
 ### Transitioning from an R user to an R programmer
 
 -   how to make your own functions and custom tools to address questions related to your project;
--   how to make packages to share code and data.
+-   how to create packages to share code and data.
 
 General instructions
 --------------------
