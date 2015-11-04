@@ -8,7 +8,7 @@ In this course we'll learn:
 -   statistical tests;
 -   packages.
 
-### Import, export and data manipulation
+### Import, export and manipulation of data
 
 -   import and export data in common formats (\*.csv, \*.xls, \*.txt, …);
 -   tools for intuitive data manipulation (e.g., dplyr and tidyr).
@@ -31,8 +31,8 @@ General instructions
 -   Install the Rstudio IDE from [Rstudio's website](https://www.rstudio.com/products/RStudio/#Desktop)
 -   Take the [TryR](http://tryr.codeschool.com) exercises
 
-Biobliography
--------------
+Bibliography
+------------
 
 -   [Peng R. R programming for Data Science. Leanpub, 2015](https://leanpub.com/rprogramming)
 -   [Peng R. Exploratory Data Analysis with R. Leanpub, 2015](https://leanpub.com/exdata)
