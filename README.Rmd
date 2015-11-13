@@ -39,5 +39,7 @@ output:
 
 ##Bibliography
 
+#### You can download the books below for free by choosing to "pay" $0 for them!
+
 * [Peng R. R programming for Data Science. Leanpub, 2015](https://leanpub.com/rprogramming)
 * [Peng R. Exploratory Data Analysis with R. Leanpub, 2015](https://leanpub.com/exdata)
