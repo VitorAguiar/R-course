@@ -1,11 +1,11 @@
 In this course we'll learn:
 ---------------------------
 
-### Intro to the R language
+### Introduction to the R language
 
--   structure, syntax, types and classes;
+-   vocabulary, syntax, data types, classes, etc;
 -   most used functions;
--   statistical tests;
+-   built-in statistical tests;
 -   packages.
 
 ### Import, export and manipulation of data
@@ -15,12 +15,13 @@ In this course we'll learn:
 
 ### Visualization
 
--   introduction to the ggplot2 graphics system.
+-   introduction to the ggplot2 system of graphics.
 
 ### Transitioning from an R user to an R programmer
 
 -   how to make your own functions and custom tools to address questions related to your project;
--   how to create packages to share code and data.
+-   how to create packages to share code and data;
+-   introduction to version control with GitHub.
 
 General instructions
 --------------------
@@ -30,6 +31,10 @@ General instructions
 -   Install R from [<https://www.r-project.org>](https://www.r-project.org)
 -   Install the Rstudio IDE from [Rstudio's website](https://www.rstudio.com/products/RStudio/#Desktop)
 -   Take the [TryR](http://tryr.codeschool.com) exercises
+
+### Logistics:
+
+Local: LIEG-UFES 9 - 12h and 14 - 16:30h
 
 Bibliography
 ------------
