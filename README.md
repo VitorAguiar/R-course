@@ -34,7 +34,9 @@ General instructions
 
 ### Logistics:
 
-Local: LIEG-UFES 9 - 12h and 14 - 16:30h
+Local: LIEG-UFES
+
+9 - 12h and 14 - 16:30h
 
 Bibliography
 ------------
