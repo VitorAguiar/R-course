@@ -36,7 +36,7 @@ General instructions
 
 Local: LIEG-UFES
 
-Dates: Nov 30 to Dec 4, 9 - 12h and 14 - 16:30h
+Dates: Nov 30 to Dec 4 9 - 12h and 14 - 16:30h
 
 Bibliography
 ------------
