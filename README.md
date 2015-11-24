@@ -34,9 +34,15 @@ General instructions
 
 ### Logistics:
 
-Local: LIEG-UFES
+Local:
 
-Dates: Nov 30 to Dec 4 9 - 12h and 14 - 16:30h
+LIEG-UFES
+
+Dates:
+
+Nov 30 to Dec 4
+
+9 - 12h and 14 - 16:30h
 
 Bibliography
 ------------
