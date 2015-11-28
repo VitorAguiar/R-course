@@ -59,8 +59,7 @@ and naming things."*
 
 #### create a repository on GitHub
 
--   copy the URL (something like
-    `git@github.com:username/repositoryname.git`)
+-   copy the URL (something like `git@github.com:user/repo.git`)
 
 #### go to your shell
 
