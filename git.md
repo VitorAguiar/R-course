@@ -3,7 +3,7 @@
 -   Mac OS (homebrew)
     -   brew install git
 -   Ubuntu (apt-get)
-    -   apt-get install git
+    -   sudo apt-get install git-core
 -   Windows
     -   [Windows build on the git website](https://git-scm.com)
 
@@ -17,11 +17,6 @@
 consult the GitHub article on [adding SSH
 keys](https://help.github.com/articles/generating-ssh-keys/#platform-all)
 
-#### create a repository on GitHub
-
--   copy the URL (something like
-    <*git@github.com>:username/repositoryname.git\*)
-
 #### in Rstudio:
 
 -   install the devtools package
@@ -30,23 +25,34 @@ keys](https://help.github.com/articles/generating-ssh-keys/#platform-all)
 
     install.packages("devtools")
 
--   start a repository with:
+-   go to file \> New Project \> New Directory \> R package
+-   choose a name for you package
+-   check the box "Create a git repository"
 
-<!-- -->
+R package names must:
 
-    devtools::create("PackageName")
+-   contain only letters, number or periods
+-   start with a letter and not end with a period
 
-Attention: R package names must start with a letter and only contain
-alphanumeric characters, which means that underscores are not allowed.
+Recommendations:
+
+-   the use of periods are not recommended
+-   avoid using both lower and upper case letters
+-   find a good name!
+
+*"There are only two hard things in Computer Science: cache invalidation
+and naming things."*
+
+> --<cite>Phil Karlton</cite>
+
+#### create a repository on GitHub
+
+-   copy the URL (something like
+    <*git@github.com>:username/repositoryname.git\*)
 
 #### go to your shell
 
--   you need to start the git version control on the package directory:
-
-<!-- -->
-
     cd path_to_package_dir
-    git init
     git add remote origin https://github.com/user/repo.git
 
 #### Rstudio
