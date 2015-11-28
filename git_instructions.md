@@ -9,6 +9,8 @@
 
 #### settings
 
+go to your shell and execute the following commands:
+
     git config --global user.name "Your Name"
     git config --global user.email "your@email.com"    
 
@@ -58,7 +60,7 @@ and naming things."*
 #### create a repository on GitHub
 
 -   copy the URL (something like
-    <*git@github.com>:username/repositoryname.git\*)
+    `git@github.com:username/repositoryname.git`)
 
 #### go to your shell
 

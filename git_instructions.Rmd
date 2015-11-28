@@ -20,6 +20,8 @@ output:
     
 #### settings
 
+go to your shell and execute the following commands:
+
 ```
 git config --global user.name "Your Name"
 git config --global user.email "your@email.com"    
@@ -68,7 +70,7 @@ Recommendations:
 
 #### create a repository on GitHub
 
-- copy the URL (something like *git@github.com:username/repositoryname.git*)
+- copy the URL (something like `git@github.com:username/repositoryname.git`)
 
 #### go to your shell
 
