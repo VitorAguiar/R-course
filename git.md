@@ -17,6 +17,16 @@
 consult the GitHub article on [adding SSH
 keys](https://help.github.com/articles/generating-ssh-keys/#platform-all)
 
+or follow these steps:
+
+-   go to Rstudio global options (Tools \> Global Options...)
+-   click on the Git/SVN pane
+-   click on the button "Create RSA Key"
+-   copy the key
+-   go to your GitHub settings \> SSH keys
+-   click on the button "Add SSH key"
+-   paste the key and save
+
 #### in Rstudio:
 
 -   install the devtools package
