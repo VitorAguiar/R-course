@@ -24,11 +24,34 @@ keys](https://help.github.com/articles/generating-ssh-keys/#platform-all)
 
 #### in Rstudio:
 
--   file \> new project \> Version Control \> Git
--   paste the repository URL
--   give a directory name (use same as repository name)
+-   install the devtools package
 
--   go to the Rstudio pane which lists your files
+<!-- -->
+
+    install.packages("devtools")
+
+-   start a repository with:
+
+<!-- -->
+
+    devtools::create("PackageName")
+
+Attention: R package names must start with a letter and only contain
+alphanumeric characters, which means that underscores are not allowed.
+
+#### go to your shell
+
+-   you need to start the git version control on the package directory:
+
+<!-- -->
+
+    cd path_to_package_dir
+    git init
+    git add remote origin https://github.com/user/repo.git
+
+#### Rstudio
+
+-   go to the pane which lists your files
 -   click on the "Git" tab
 -   check the box under "Staged"
 -   click on the commit button
