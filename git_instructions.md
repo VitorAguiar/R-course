@@ -64,7 +64,7 @@ and naming things."*
 #### go to your shell
 
     cd path_to_package_dir
-    git add remote origin https://github.com/user/repo.git
+    git add remote origin git@github.com:user/repo.git
 
 #### Rstudio
 
