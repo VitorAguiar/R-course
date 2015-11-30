@@ -199,5 +199,7 @@ sapply(subset(iris, select = -Species), mean)
 mean(rnorm(100) > 0)
 table(rbinom(100, 1, 0.5))
 
+"http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:gbmam93.csv"
+
 #### session info -------------------------------------------------------------#
 sessionInfo()

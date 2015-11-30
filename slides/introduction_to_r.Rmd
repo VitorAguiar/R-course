@@ -371,7 +371,7 @@ library(help="datasets")
 
 # Hands on!
 
------
+## { .smaller}
 
 Choose a dataset and try to subset, apply functions, etc
 
@@ -392,6 +392,15 @@ Generate data and apply the functions we've seen:
 mean(rnorm(100) > 0)
 table(rbinom(100, 1, 0.5))
 ```
+
+Read the data at:
+
+```
+http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:gbmam93.csv
+```
+
+And apply functions to rows and columns using the function apply
+
 
 # Packages
 
