@@ -1,0 +1,426 @@
+---
+title: "Statistics in R"
+author: "Vitor Aguiar"
+date: "November 30, 2015"
+output: 
+  ioslides_presentation:
+  smaller: true
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
+```
+
+# Probability and distributions
+
+## generate a sample
+
+```{r}
+sample(1:10)
+sample(1:10, 5)
+sample(0:1, 10, replace = TRUE)
+sample(0:1, 10, replace = TRUE, prob = c(0.9, 0.1))
+```
+
+## random number generation giving distribution
+
+```{r eval=FALSE}
+rnorm()
+rbinom()
+rpois()
+.
+.
+.
+```
+
+## distributions
+
+```{r eval=FALSE}
+dnorm()
+dbinom()
+dpois()
+.
+.
+.
+
+?Distributions
+```
+
+## example: normal distribution { .smaller}
+
+```{r fig.width=4, fig.height=4, fig.align='center'}
+x <- rnorm(1000, mean = 0, sd = 1)
+plot(x = x, y = dnorm(x))
+```
+
+## cumulative distribution functions 
+
+```{r eval=FALSE}
+pnorm()
+pbinom()
+ppois()
+.
+.
+.
+```
+
+---
+```{r}
+pnorm(1, mean = 0, sd = 1)
+pnorm(1, mean = 0, sd = 1) - pnorm(-1, mean = 0, sd = 1)
+pnorm(2, mean = 0, sd = 1) - pnorm(-2, mean = 0, sd = 1)
+pnorm(3, mean = 0, sd = 1) - pnorm(-3, mean = 0, sd = 1)
+```
+  
+## summary statistics for a single group { .smaller}
+
+```{r}
+x <- rnorm(50)
+mean(x)
+median(x)
+sd(x)
+var(x)
+```
+
+## { .smaller}
+
+```{r}
+summary(x)
+quantile(x)
+quantile(x, seq(from = 0, to = 1, by = 0.1))
+```
+  
+## summary statistics by groups { .smaller}
+
+```{r}
+data(msleep, package = "ggplot2")
+tapply(msleep$sleep_total, msleep$order, mean)
+```
+
+## { .smaller}
+
+```{r}
+aggregate(msleep[c("sleep_total", "bodywt")], 
+          by = list(order = msleep$order, vore = msleep$vore),
+          FUN = mean, na.rm = TRUE)
+```
+
+## { .smaller}
+
+```{r}
+library(dplyr)
+msleep %>% 
+  group_by(order, vore) %>% 
+  summarise(mean_sleep = mean(sleep_total), mean_weight = mean(bodywt, na.rm = TRUE))
+```
+
+# statistical tests
+
+---
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=50)}
+intake <- c(1260, 1300, 1350, 1480, 1530, 1560, 1620, 1800, 1800, 1970, 2100)
+```
+
+## one sample t test
+
+- assumption: sample come from a normally distributed data
+
+```{r}
+t.test(intake, mu = 1800)
+```
+
+## Wilcoxon signed-rank test
+
+- distribution free (nonparametric)
+- replace data with order statistics
+     
+One sample Wilcoxon:    
+
+1. subtract theoretical mean 
+2. rank the differences, ignoring the sign 
+3. compute the sum of positive or negative ranks 
+
+---
+
+```{r}
+wilcox.test(intake, mu = 1800)
+```
+
+## two-sample t test
+
+- assumption: the two samples come from distributions with same mean
+
+data:
+```{r}
+sex <- rep(c("m", "f"), c(9, 13))
+expend <- c(2200, 2750, 2910, 2830, 2380, 2100, 2315, 2312,
+            2195, 1800, 1790, 1930, 1935, 2430, 2000, 2600,
+            1470, 7.90, 1880, 1790, 1810, 1940)
+
+energy <- data.frame(sex, expend)
+
+str(energy)
+```
+
+---
+```{r}
+t.test(expend~sex, data = energy)
+```
+
+## two-sample Wilcoxon test
+
+- replace data by their rank (without regard to grouping)
+- sum the ranks in one group
+- sample n1 values without replacement from 1 to n1+n2
+
+```{r}
+wilcox.test(expend~sex, data = energy)
+```
+
+## paired t test
+
+- two measures on the same experimental unit
+- take the differences and reduce the problem to that of a one-sample test
+
+data:
+```{r}
+plant <- CO2$Plant[CO2$Type == "Quebec" & CO2$Treatment == "nonchilled"]
+nonchilled <- CO2$uptake[CO2$Type == "Quebec" & CO2$Treatment == "nonchilled"]
+chilled <- CO2$uptake[CO2$Type == "Quebec" & CO2$Treatment == "chilled"]
+
+plant_co2 <- data.frame(plant, chilled, nonchilled)
+
+str(plant_co2)
+```
+
+---
+```{r}
+t.test(nonchilled, chilled, data = plant_co2, paired = TRUE)
+
+# compare with:
+#t.test(nonchilled, chilled, data = plant_co2, paired = FALSE)
+```
+
+## paired Wilcoxon test
+
+- same as a one-sample Wilcoxon signed-rank test on the differences
+
+```{r}
+wilcox.test(nonchilled, chilled, data = plant_co2, paired = TRUE)
+```
+
+# Hands on
+
+---
+
+look at the documentation of the t.test function
+
+```{r eval=FALSE}
+?t.test
+```
+
+change the argument values and test again, e.g.:
+
+```{r eval=FALSE}
+t.test(intake, mu = 1800, conf.level = 0.99)
+t.test(expend~sex, data = energy, var.equal = TRUE)
+```
+
+check the structure
+
+```{r eval=FALSE}
+my_t_test <- t.test(intake, mu = 1800)
+str(my_t_test)
+```
+
+extract components
+```{r eval = FALSE}
+my_t_test$p.value
+```
+
+## simple linear regression
+
+```{r}
+iris_setosa <- subset(iris, Species == "setosa")
+```
+
+---
+
+```{r}
+summary(lm(Sepal.Length~Sepal.Width, data = iris_setosa))
+```
+
+---
+
+```{r}
+library(ggplot2)
+ggplot(data = iris_setosa, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+##
+
+![iris setosa](http://www.plant-world-seeds.com/images/seed_images/IRIS_HOOKERI/size3_500x500/IRIS%20HOOKERI.JPG)
+*Iris setosa*
+
+# Correlation
+
+---
+
+**Pearson correlation**
+
+```{r}
+cor(iris_setosa$Petal.Length, iris_setosa$Petal.Width)
+
+#Are the correlations different from 0?
+cor.test(iris_setosa$Petal.Length, iris_setosa$Petal.Width)
+```
+
+---
+
+```{r}
+cor(iris_setosa[1:4])
+```
+
+---
+
+**Spearman correlation**
+
+```{r}
+cor.test(iris_setosa$Petal.Length, iris_setosa$Petal.Width, 
+         method = "spearman")
+```
+
+## one-way analysis of variance
+
+- one-way classifications of data
+- description similar to a regression analysis
+- descriptive variable needs to be a factor
+
+```{r}
+anova(lm(weight~group, data = PlantGrowth))
+```
+
+---
+
+not assuming equal variances:
+
+```{r}
+oneway.test(weight~group, data = PlantGrowth)
+```
+
+---
+
+**OK, there is a difference between groups, but where the difference lies?**
+
+---
+
+```{r}
+pairwise.t.test(PlantGrowth$weight, PlantGrowth$group)
+```
+
+## { .smaller}
+
+```{r echo=FALSE}
+library(ggplot2)
+ggplot(PlantGrowth, aes(group, weight)) +
+  geom_point(size = 4, alpha = .8) +
+  stat_summary(fun.data = mean_cl_boot, geom = "point", size = 4) +
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", width = .25, color = "red") +
+  stat_summary(aes(group = 1), fun.data = mean_cl_boot, geom = "line", color = "red") +
+  xlab("")
+```  
+
+## Kruskal-Wallis test
+
+- nonparametric counterpart of the one-way analysis of variance
+- data are replaced with their rankings without regard to grouping
+- based on the SS~B~ calculated from average ranks
+
+```{r}
+kruskal.test(weight~group, data = PlantGrowth)
+```
+
+## two-way analysis of variance
+
+- cross classified data according to several criteria
+- balanced design
+
+```{r}
+anova(lm(uptake~Type+Treatment, data = CO2))
+```
+
+- nonparametric counterpart: `friedman.test()`
+
+# tabular data
+
+---
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+treatments <- matrix(c(652, 1537, 598, 242, 36, 46, 38, 21, 218, 327, 106, 67),
+                     nrow = 3, byrow = T)
+colnames(treatments) <- c("0","1-150","151-300",">300")
+rownames(treatments) <- c("treatment1", "treatment2", "treatment3")
+
+treatments
+```
+
+## chi-squared test
+
+```{r}
+chisq.test(treatments)
+```
+
+- `chisq.test()` can be used on raw and untabulated data.
+
+---
+
+```{r}
+E <- chisq.test(treatments)$expected
+O <- chisq.test(treatments)$observed
+(O-E)^2/E
+```
+
+## multiple regression
+
+```{r}
+data(cystfibr, package = "ISwR")
+str(cystfibr)
+```
+
+## { .smaller}
+
+```{r}
+summary(lm(pemax~age+sex+height+weight+bmp+fev1+rv+frc+tlc, data=cystfibr))
+```
+
+## anova table for multiple regression
+
+```{r}
+anova(lm(pemax~age+sex+height+weight+bmp+fev1+rv+frc+tlc, data=cystfibr))
+```
+
+## logistic regression
+
+```{r}
+smoking <- gl(2, 1, 8, c("No", "Yes"))
+obesity <- gl(2, 2, 8, c("No", "Yes"))
+snoring <- gl(2, 4, 8, c("No", "Yes"))
+n.tot <- c(60, 17, 8, 2, 187, 85, 51, 23)
+prop.hyp <- c(5, 2, 1, 0, 35, 13, 15, 8)/n.tot
+hyp_data <- data.frame(smoking, obesity, snoring, prop.hyp, n.tot)
+```
+
+---
+
+```{r}
+summary(glm(prop.hyp~smoking+obesity+snoring, binomial, weights = n.tot, 
+            data = hyp_data))
+```
+
+
+## Bibliography
+
+- [Peter Dalgaard. Introductory Statistics with R. 2nd Edition. Springer, 2008.](http://www.academia.dk/BiologiskAntropologi/Epidemiologi/PDF/Introductory_Statistics_with_R__2nd_ed.pdf)

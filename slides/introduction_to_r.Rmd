@@ -1,0 +1,428 @@
+---
+title: "Introduction to R"
+author: "Vitor Aguiar"
+date: "November 30, 2015"
+output: 
+  ioslides_presentation
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
+```
+
+# Why?
+
+## Why use a programming language?
+
+- reproducibility and communication
+    - code sharing
+- collaboration
+- automation
+- code is just text!
+    - easy to maintain and track changes
+- allows you to think more about your analysis
+- allows custom analyses
+    - existing software can only answer questions that have already been posed
+
+## Why R?
+
+- open source
+- free
+- large community
+- thousands of add-on packages
+    - statistical modelling
+    - visualization
+    - data manipulation
+    - biology!
+- connectivity with high performance languages
+- interactive exploratory analysis
+- allows a continuum of expertise
+
+Drawbacks: can be slow and memory consuming
+
+# demo: Rstudio
+
+---
+
+> *"[In R] Every thing that exists is an object. Everything that happens is a function call."*
+
+> -- <cite>John Chambers</cite>
+
+# Demo: environment and assignment
+
+```{r include=FALSE}
+ls()
+
+# assignment:
+x <- 10
+
+ls()
+
+rm(x)
+
+ls()
+
+```
+
+# Data structures
+
+---
+
+| dimension | Homogeneous | Heterogeneous |
+|:---------:|:-----------:|:-------------:|
+|   1d      |atomic vector|     List      |
+|   2d      |   matrix    |  data frame   |
+|   nd      |   array     |               |
+
+**contructor functions:**
+
+- c()
+- vector()
+- list()
+- matrix()
+- data.frame()
+- array()
+- factor()
+
+## Types
+
+- integer
+- numeric
+- character
+- logical
+- complex
+- raw
+
+## Special values
+
+- NULL
+- NA
+- NaN
+- Inf
+- TRUE and FALSE
+
+# demo: data structures and types
+
+```{r include=FALSE}
+# 1D
+
+## homogeneous: atomic vector
+v <- 10
+v
+class(v)
+
+v <- 1:100
+v
+class(v)
+
+typeof(v)
+
+v <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+v
+is.integer(v)
+typeof(v)
+
+v <- c("a", "c", "t", "g")
+v
+typeof(v)
+
+## factor
+f <- factor(c("a", "b", "b", "a", "b", "a", "b", "a"))
+f
+typeof(f)
+class(f)
+
+## heterogeneous: lists
+
+l <- list(a = 1:10, b = c("a", "t", "c", "g"), c = data.frame(var1 = 1:3, var2 = c("a", "b", "c")))
+l
+typeof(l)
+
+# 2D
+
+## matrix
+
+m <- matrix(c("a", "b", 1, 2), nrow = 2)
+m
+typeof(m)
+
+## data frame
+
+df <- data.frame(letter = c("a", "b", "c"), number = 1:3)
+df
+typeof(df)
+
+list(letter = c("a", "b", "c"), number = 1:3)
+as.data.frame(list(letter = c("a", "b", "c"), number = 1:3))
+
+# nD
+
+## array
+a <- array(1:12, dim = c(2, 3, 2))
+a
+
+### these are the same:
+array(1:6, c(2, 3))
+matrix(1:6, nrow = 2)
+
+# attributes
+
+length(v)
+length(l)
+dim(m)
+dim(df)
+dim(a)
+
+names(v)
+names(v) <- c("nt1", "nt2", "nt3", "nt4")
+v
+names(v)
+
+rownames(m) <- c("ind1", "ind2")
+colnames(m) <- c("letter", "number")
+#or:
+dimnames(m) <- list(c("ind1", "ind2"), c("letter", "number"))
+
+attributes(m)
+attributes(df)
+
+# str()
+str(v)
+str(df)
+
+summary(df)
+```
+
+# demo: subsetting
+
+```{r include=FALSE}
+v
+v[1]
+v[c(1, 4)]
+v[-1]
+v[c(TRUE, FALSE, TRUE, FALSE)]
+v[v > "c"]
+
+names(v) <- c("nt1", "nt2", "nt3", "nt4")
+v["nt3"]
+
+l
+
+l[1]
+l["a"]
+class(l[1])
+l[[1]]
+class(l[[1]])
+l[[1]][1]
+
+l$a
+
+df
+
+df$letter
+
+m
+m[1, 1]
+m[2, 1:2]
+m[, 1]
+m[-1, ]
+
+df
+df[2, 1:2]
+df[[2]]
+```
+
+----- 
+
+![subsetting](https://pbs.twimg.com/media/CO2_qPVWsAAErbv.png:medium)
+
+# operators and functions
+
+## operators { .smaller} 
+
+```{r eval=FALSE}
+x + y
+x - y 
+x * y
+x / y
+x ^ y
+x %% y
+x %/% y
+x %*% y
+x == y
+x != y  
+x > y
+x < y
+x >= y
+x <= y
+x | y
+x & y
+x %in% y
+
+?Syntax  
+```
+
+## Functions
+
+```{r eval=FALSE}
+fun <- function(x) do_something
+```
+
+Anonymous functions:
+```{r eval=FALSE}
+function(x) do_something
+```
+
+## commom built-in functions
+
+|:-----------:|:----------:|:----------:|
+|sum()        |str()       |rnorm()     |
+|log()        |summary()   |rbinom()    |
+|exp()        |lm()        |runif()     |
+|mean()       |table()     |rbeta()     |
+|median()     |head()      |rgamma()    |
+|var()        |tail()      |sample()    |
+|sd()         |dim()       |rep()       |
+|sqrt()       |subset()    |            |
+
+## getting help
+
+```{r eval=FALSE}
+help(mean)
+
+?mean
+
+?"["
+
+??"linear model"
+
+apropos("mean")
+
+help(package="dplyr")
+```
+
+## apply
+
+- apply
+- lapply
+- sapply
+- tapply
+- mapply
+
+```{r}
+sapply(iris[1:4], mean)
+```
+
+## { .smaller}
+
+Anonymous functions are very useful in `apply` functions:
+
+```{r}
+iris_by_species <- split(iris, iris$Species)
+lapply(iris_by_species, function(x) summary(lm(Sepal.Length~Sepal.Width, data = x))$r.squared)
+```
+
+## flow control structures
+
+- for
+- while
+```{r eval=FALSE} 
+for (iterator in times) do something
+```
+
+- if
+- else
+
+```{r}
+x <- 10
+if (x > 0) y <- 1 else y <- 0
+y
+```
+
+- next
+- stop
+
+## Vectorization
+
+vectorized computations operate on all elements of a vector
+
+```{r}
+(1:10) ^ 2
+1:10 * c(2, 3)
+```
+
+## datasets
+
+```{r eval=FALSE}
+library(help="datasets")
+```
+
+# data in and out
+
+---
+
+|   READ      |   WRITE     |
+|:-----------:|:-----------:|
+|read.table() |write.table()|
+|read.csv()   |write.csv()  |
+|read.csv2()  |write.csv2() |
+|readLines()  |writeLines() |
+|readRDS()    |saveRDS()    |
+
+# Hands on!
+
+-----
+
+Choose a dataset and try to subset, apply functions, etc
+
+e.g.:
+
+```{r eval = FALSE}
+head(iris)
+str(iris)
+summary(iris)
+sum(iris$Petal.Length)
+mean(iris$Sepal.Width)
+tapply(iris$Petal.Length, iris$Species, mean)
+sapply(subset(iris, select = -Species), mean)
+```
+
+Generate data and apply the functions we've seen:
+```{r eval=FALSE}
+mean(rnorm(100) > 0)
+table(rbinom(100, 1, 0.5))
+```
+
+# Packages
+
+-----
+
+[CRAN](https://cran.rstudio.com/web/packages/available_packages_by_date.html)
+
+January 2015: 6000 packages on CRAN
+
+```{r eval=FALSE}
+install.packages("PackageName")
+library("PackageName")
+```
+
+**GitHub:**
+```{r eval=FALSE}
+devtools::install_github("UserName/PackageName")
+```
+
+-----
+```{r}
+sessionInfo()
+```
+
+## Good practices
+
+- style guides
+- use existing tools when available 
+    - longer history
+    - larger audience
+- keep packages updated
+- do not save history or your environment
+    - rerun analysis from script
+- use a version control system
