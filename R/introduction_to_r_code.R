@@ -146,7 +146,7 @@ help(mean)
 
 ?"["
 
-??"linear model"
+??"principal component"
 
 apropos("mean")
 
