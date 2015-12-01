@@ -76,7 +76,6 @@ sapply(altura_df, class)
 
 # illustrate the problem with factors
 
-
 ## readr
 library(readr)
 
