@@ -1,0 +1,451 @@
+---
+title: "Data viz with ggplot2"
+author: "Vitor Aguiar"
+output: 
+    ioslides_presentation:
+    smaller: true
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
+```
+
+# Why visualize?
+
+---
+
+```{r}
+anscombe
+```
+
+---
+
+```{r}
+# mean
+sapply(anscombe, mean)
+
+# variance
+sapply(anscombe, var)
+
+# correlation x-y
+mapply(cor, anscombe[1:4], anscombe[5:8])
+
+# linear regression line
+mapply(function(x, y) summary(lm(y ~ x))$coef[,1], anscombe[1:4], anscombe[5:8])
+```
+
+---
+
+```{r, echo=FALSE}
+library(ggplot2)
+library(magrittr)
+library(ggthemes)
+
+anscombe2 <-
+  anscombe %>% 
+  dplyr::mutate(i = 1:nrow(.)) %>%
+  tidyr::gather(variable, value, x1:y4) %>%
+  tidyr::extract(variable, c("variable", "idx"), "(x|y)([1-4])") %>%
+  tidyr::spread(variable, value)
+
+ggplot(anscombe2, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  facet_wrap(~idx, scales = "free") +
+  labs(title = "Anscombe's Quartet of 'Identical' Simple Linear Regressions")
+```
+
+## Grammar of Graphics
+
+gpplot2 is a system built on the **grammar of graphics** (Wilkinson, Anand and Grossman, 2005).
+
+## Components:
+
+- **data**
+- **aes**: aesthetic mappings
+- **geom**: geometric objects
+- **scale**: control mapping from data to aesthetics
+- **stat**: statistical transformation
+- **coord**: coordinate system
+- **facet**: faceting specification
+
+## data
+
+**Must be a data frame!**
+
+- your data is very important, it's better to be clear
+- a data frame is easier to save than a multitude of vectors: reproducibility
+
+## aesthetic mappings
+
+describe the way that variables are mapped to things that we can see on the plot
+
+## geom
+
+- control the type of plot you create (e.g., geom_point for scatterplots, geom_histogram for histograms)
+
+## stat
+
+- transforms the data, typically by summarising it in some manner
+- can add new computed variables to the original dataset (e.g., ..density..)
+
+## position adjustments
+
+- normally used with discrete data
+- adjustments to deal with overlap
+
+## scales
+
+- control the mapping from data to aesthetics
+- control all aspects of the guides (axes + legends)
+- nomenclature: scale_aesthetic_nameofscale()
+    - e.g.: scale_color_manual, scale_x_discrete, ...
+
+---
+
+see help(package="ggplot2")
+
+## basic structure
+
+```{r eval=FALSE}
+ggplot(data, aes(x, y)) + geom
+```
+
+## The iris data
+
+```{r}
+str(iris)
+```
+
+---
+
+```{r eval = FALSE}
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width)) +
+  geom_point()
+
+ggplot(data = iris) +
+  aes(x = Petal.Length, y = Petal.Width) +
+  geom_point()
+
+ggplot(data = iris) +
+  layer(mapping = aes(x = Petal.Length, y = Petal.Width), 
+        geom = "point", stat = "identity", position = "identity", 
+        params = list(na.rm = FALSE))
+  
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width)) + 
+  layer(geom = "point", stat = "identity", position = "identity", 
+        params = list(na.rm = FALSE))
+```
+
+---
+
+```{r}
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width)) +
+  geom_point()
+```
+
+## Difference between the base R plot system and ggplot2
+
+## Scatterplot
+
+```{r}
+with(iris, plot(Sepal.Length, Petal.Length))
+
+ggplot(iris, aes(Sepal.Length, Petal.Length)) + 
+  geom_point()
+```
+
+## Multiple histograms
+
+```{r}
+par(mfrow = c(3, 1))
+with(subset(iris, Species == "setosa"), hist(Sepal.Length, col = "red"))
+with(subset(iris, Species == "versicolor"), hist(Sepal.Length, col = "green"))
+with(subset(iris, Species == "virginica"), hist(Sepal.Length, col = "blue"))
+
+ggplot(iris, aes(Sepal.Length, fill = Species)) +
+  geom_histogram(binwidth = 0.5, color = "black") +
+  facet_wrap(~Species, ncol = 1)
+```
+
+## With ggplot2:
+
+```{r}
+ggplot(iris, aes(x = Sepal.Length, y = ..density.., fill = Species)) +
+  geom_histogram(binwidth = 0.5) +
+  facet_wrap(~Species, ncol = 1)
+```
+
+# The ggplot2 advantages are not clear?
+
+## automatic coloring and legends
+
+```{r}
+ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) +
+  geom_point(size = 4)
+```
+
+## or shapes
+
+```{r}
+ggplot(iris, aes(Sepal.Length, Petal.Length, shape = Species)) +
+  geom_point(size = 4)
+```
+
+## mapping size to a forth variable
+
+```{r}
+ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) +
+  geom_point(aes(size = Petal.Width))
+```
+
+## What if we wanted to color and separate plot windows by species, create a legend and add a smooth line?
+
+---
+
+```{r}
+ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) + 
+  geom_point() +
+  geom_smooth(method = lm) +
+  facet_wrap(~Species, scales = "free_x")
+```
+
+# geoms
+
+## smooth
+
+```{r}
+ggplot(iris, aes(Sepal.Length, Petal.Length)) +
+  geom_point(size = 4) +
+  geom_smooth()
+
+ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) +
+  geom_point(size = 4) +
+  geom_smooth()
+
+ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) +
+  geom_point(size = 4) +
+  geom_smooth(aes(group = 1))
+
+ggplot(iris, aes(Sepal.Length, Petal.Length)) +
+  geom_point(size = 4) +
+  geom_smooth(method = lm)
+
+library(mgcv)
+ggplot(iris, aes(Sepal.Length, Petal.Length)) +
+  geom_point(size = 4) +
+  geom_smooth(method = gam, formula = y ~ s(x))
+
+library(MASS)
+ggplot(iris, aes(x = Sepal.Length, y = Petal.Length)) +
+  geom_point(size = 4) +
+  geom_smooth(method = "rlm")
+```
+
+## jitter and boxplot
+
+```{r}
+ggplot(iris, aes(Species, Petal.Length, color = Species)) +
+  geom_jitter()
+
+ggplot(iris, aes(Species, Petal.Length*Petal.Width, color = Species)) +
+  geom_jitter()
+
+ggplot(iris, aes(Species, Petal.Length*Petal.Width, fill = Species)) +
+  geom_boxplot()
+```
+
+## Histogram and density
+
+```{r}
+ggplot(iris, aes(Petal.Length)) + 
+  geom_histogram(binwidth = .2) 
+
+ggplot(iris, aes(Petal.Length, fill = Species)) + 
+  geom_histogram(binwidth = .1) 
+
+ggplot(iris, aes(Petal.Length, fill = Species)) + 
+  geom_histogram(aes(y = ..density..), binwidth = .1) 
+
+# Density smooth
+ggplot(iris, aes(Petal.Length, fill = Species)) + 
+  geom_density(alpha = .7) +
+  theme_bw()
+```
+
+## bar
+
+```{r}
+ggplot(msleep, aes(order, fill = vore)) + 
+  geom_bar() + 
+  theme(legend.position = "bottom", 
+        axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{r eval=FALSE, echo=FALSE}
+ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar()
+ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar(position = "stack")
+
+ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar(position = "fill")
+ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar(position = "dodge")
+```
+
+## text
+
+```{r}
+ggplot(msleep, aes(bodywt, sleep_total, label = genus, color = vore)) + 
+  geom_text() + 
+  scale_x_log10()
+```
+
+# faceting
+
+--- 
+
+- 1d: `facet_wrap()`
+- 2d: `facet_grid()`
+
+```{r}
+ggplot(iris, aes(Petal.Length, fill = Species)) + 
+  geom_density(color = NA) +
+  facet_wrap(~Species, ncol = 1) + 
+  theme_bw()
+```
+
+## margins
+
+```{r}
+
+```
+
+## more themes from the ggthemes package
+
+```{r}
+p <- 
+  ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) + 
+  geom_point()
+```
+
+##
+
+```{r}
+p + theme_wsj()
+```
+
+##
+
+```{r}
+p + theme_fivethirtyeight()
+```
+
+##
+
+```{r}
+p + theme_economist()
+```
+
+## lines { .smaller}
+```{r fig.height=3.5, fig.width=7, fig.align='center'}
+# allele frequency
+f <- seq(0.05, 0.95, by = 0.05)
+
+# genotype frequencies
+hw <- 
+  data.frame(allele_freq = f, f11 = f^2, f12 = 2*f*(1 - f), f22 = (1 - f)^2) %>%
+  tidyr::gather(genotype, genotype_freq, f11:f22)
+
+ggplot(data = hw, aes(x = allele_freq, y = genotype_freq, group = genotype)) +
+  geom_line(size = 2)
+```
+
+## log transformation of the axes
+
+```{r}
+ggplot(data = msleep, aes(x = brainwt, y = bodywt, color = vore)) + 
+  geom_point()
+```
+
+---
+
+```{r}
+ggplot(data = msleep, aes(x = log10(brainwt), y = log10(bodywt), color = vore)) + 
+  geom_point()
+```
+
+---
+
+```{r}
+ggplot(data = msleep, aes(x = brainwt, y = bodywt, color = vore)) + 
+  geom_point() +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+## Color
+
+- hcl color scheme
+
+- continuous:
+    - `scale_color_gradient()` and `scale_fill_gradient()`
+    - `scale_color_gradient2()` and `scale_fill_gradient2()`
+    - `scale_color_gradientn()` and `scale_fill_gradientn()`
+    
+- discrete:
+    - `scale_color_hue()` and `scale_fill_hue()`
+    - `scale_color_brewer()` and `scale_fill_brewer()`
+    - many schemes from `ggthemes` package
+
+
+## RColorBrewer
+
+```{r}
+RColorBrewer::display.brewer.all()
+```
+
+## setting vs. mapping
+
+```{r echo=FALSE, eval=FALSE}
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width)) +
+  geom_point(color = "darkblue")
+
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = "darkblue")) +
+  geom_point()
+```
+
+---
+
+```{r}
+ggplot(data = msleep, aes(x = brainwt, y = bodywt, color = vore)) + 
+  geom_point() +
+  scale_x_log10() +
+  scale_y_log10() +
+  scale_colour_colorblind() #from ggthemes
+```
+
+# getting a bit more sophisticated
+
+---
+
+```{r echo=FALSE}
+
+source("../R/plot_funs.R")
+
+weather_data <- 
+  readr::read_csv("../data/dados_climaticos.csv") %>%
+  tidyr::gather(variavel, valor, -(local:mes)) %>%
+  tidyr::separate(variavel, c("variavel", "unidade"), 
+                  sep = "_\\(|\\)_", extra = "drop") %>%
+  dplyr::mutate(mes = factor(mes, levels = unique(mes)))
+
+plot_weather(dplyr::filter(weather_data, variavel == "precipitação"))
+```
+
+---
+
+```{r echo=FALSE}
+morpho_data <- readr::read_csv("../data/dados_morfologicos.csv")
+
+plot_morpho(dplyr::filter(morpho_data, variavel == "altura"), unit = "cm")
+```
+
+# Hands on
