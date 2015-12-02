@@ -1,0 +1,258 @@
+---
+title: "data manipulation"
+author: "Vitor Aguiar"
+date: "December 1, 2015"
+output: ioslides_presentation
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
+```
+
+---
+
+> *"Data analysis is the process by which data becomes understanding, knowledge, and insight"*
+
+> --<cite>Hadley Wickham</cite>
+
+## magrittr operators
+
+- %>%
+- %<>%
+- %$%
+- %T>%
+
+## pipe usage
+
+```{r eval=FALSE}
+f(x)
+
+# is the same as:
+
+x %>% f()
+
+## with two arguments:
+f(x, y)
+
+# is the same as:
+x %>% f(y)
+
+## if you don't want the input to be used as 1st argument:
+f(y, x)
+
+# is the same as:
+x %>% f(y, .)
+```
+
+# dplyr
+
+## dplyr verbs
+
+- filter
+- slice
+- group_by
+- summarise
+- select
+- arrange
+- mutate
+- count
+
+---
+
+```{r}
+library(dplyr)
+```
+
+---
+
+```{r}
+data(msleep, package = "ggplot2")
+
+str(msleep)
+```
+
+## count { .smaller}
+
+```{r}
+msleep %>% count(order)
+```
+
+## filter { .smaller}
+
+```{r}
+msleep %>% filter(order == "Carnivora" & !is.na(brainwt))
+```
+
+## select
+
+```{r}
+msleep %>% 
+  filter(order == "Carnivora" & !is.na(brainwt)) %>%
+  select(genus, bodywt)
+```
+
+## group_by and summarise { .smaller}
+
+```{r}
+msleep %>%
+  group_by(order) %>%
+  summarise(average_sleep = mean(sleep_total))
+```
+
+## group by and summarise by more than 1 variable { .smaller}
+
+```{r}
+msleep %>% 
+  group_by(order, vore) %>%
+  summarise(average_sleep = mean(sleep_total), average_bodywt = mean(bodywt))
+```
+
+## summarise multiple variables { .smaller}
+
+```{r}
+msleep %>%
+  group_by(order) %>%
+  summarise_each(funs(mean(., na.rm = TRUE)), sleep_total, brainwt, bodywt)
+```
+
+## summarise with multiple functions { .smaller}
+
+```{r}
+msleep %>%
+  group_by(order) %>%
+  summarise_each(funs(mean(., na.rm = TRUE), sd(., na.rm = TRUE)), 
+                 sleep_total, brainwt, bodywt) %>%
+  select(starts_with("sleep"), starts_with("brainwt"), starts_with("bodywt"))
+```
+
+## mutate: create new variables { .smaller}
+
+```{r}
+msleep %>%
+  select(genus, sleep_total, awake) %>%
+  mutate(prop_sleep_awake = sleep_total/awake)
+```
+
+## mutate: modify existing variables { .smaller}
+
+```{r}
+msleep %>%
+  select(genus, bodywt) %>%
+  mutate(bodywt = round(bodywt*2.20462, digits = 2))
+```
+
+## mutate: modify multiple existing variables { .smaller}
+
+```{r}
+msleep %>%
+  select(genus, sleep_total, awake) %>%
+  mutate_each(funs(./24), sleep_total, awake)
+```
+
+## arrange { .smaller}
+
+```{r}
+msleep %>%
+  select(genus, sleep_total, awake) %>%
+  mutate_each(funs(./24), sleep_total, awake) %>%
+  arrange(sleep_total, awake, genus)
+```
+
+## rename  { .smaller}
+
+```{r}
+msleep %>%
+  select(genus, sleep_total, awake) %>%
+  mutate_each(funs(./24), sleep_total, awake) %>%
+  arrange(sleep_total, awake, genus) %>%
+  rename(prop_sleep = sleep_total, prop_awake = awake)
+```
+
+# tidyr
+
+## tidyr verbs
+
+- gather
+- spread
+- separate
+- unite
+- extract
+
+---
+
+data:
+
+```{r}
+monkeys <- paste(sample(1:20), c(rep("ES", 10), rep("MG", 10)), sep = "_")
+
+monkey_wt <- data_frame(individual = monkeys,
+                        "2013/01/01" = rnorm(20, 5, sd = 1),
+                        "2014/01/14" = rnorm(20, 7, sd = 1.5),
+                        "2015/02/02" = rnorm(20, 10, sd = 2))
+```
+
+## { .smaller}
+
+```{r}
+monkey_wt
+```
+
+---
+
+```{r}
+library(magrittr)
+library(tidyr)
+```
+
+## gather { .smaller}
+
+```{r}
+monkey_wt %<>%
+  gather(key=date, value=weight, 2:4)
+
+monkey_wt
+```
+
+## spread { .smaller}
+
+```{r}
+monkey_wt %>% spread(date, weight)
+```
+
+## separate { .smaller}
+
+```{r}
+monkey_wt %<>%  
+  separate(individual, into = c("id_number", "state"), sep = "_") %>%
+  mutate(id_number = as.numeric(id_number)) %>%
+  arrange(id_number, state)
+
+monkey_wt
+```
+
+## extract { .smaller}
+
+```{r}
+monkey_wt %<>%
+  extract(date, c("year", "month"), "(\\d+)/(\\d+)")
+
+monkey_wt
+```
+
+## unite
+
+```{r}
+monkey_wt %>% unite(date, year:month, sep = "/")
+```
+
+## transpose a data.frame
+
+```{r}
+monkey_wt %>% 
+  filter(state == "ES") %>% 
+  spread(id_number, weight)
+```
+
+---
+
+[Rstudio's data manipulation cheat sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)

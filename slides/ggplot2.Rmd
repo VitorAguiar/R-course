@@ -1,9 +1,7 @@
 ---
 title: "Data viz with ggplot2"
 author: "Vitor Aguiar"
-output: 
-    ioslides_presentation:
-    smaller: true
+output: ioslides_presentation
 ---
 
 ```{r global_options, include=FALSE}
