@@ -40,6 +40,7 @@ iris %<>% .[.$Species == "virginica", ]
 
 #### dplyr --------------------------------------------------------------------#
 data(msleep, package = "ggplot2")
+library(dplyr)
 
 str(msleep)
 
@@ -51,13 +52,18 @@ msleep %>%
   filter(order == "Carnivora" & !is.na(brainwt)) %>%
   select(genus, bodywt)
 
+
 msleep %>%
   group_by(order) %>%
-  summarise(average_sleep = mean(sleep_total))
+  summarise(average_sleep = mean(sleep_total)) %>%
+  arrange(desc(average_sleep))
 
 msleep %>% 
   group_by(order, vore) %>%
-  summarise(average_sleep = mean(sleep_total), average_bodywt = mean(bodywt))
+  summarise(average_sleep = mean(sleep_total), average_bodywt = mean(bodywt)) %>%
+  ungroup() %>%
+  arrange(average_sleep, average_bodywt) %>%
+  as.data.frame()
 
 msleep %>%
   group_by(order) %>%
@@ -65,8 +71,9 @@ msleep %>%
 
 msleep %>%
   group_by(order) %>%
-  summarise_each(funs(mean(., na.rm = TRUE), median(., na.rm = TRUE)), 
-                 sleep_total, brainwt, bodywt)
+  summarise_each(funs(mean(., na.rm = TRUE), sd(., na.rm = TRUE)), 
+                 sleep_total, brainwt, bodywt) %>%
+  select(order, starts_with("sleep"), starts_with("brainwt"), starts_with("bodywt"))
 
 msleep %>%
   select(genus, sleep_total, awake) %>%
@@ -74,11 +81,12 @@ msleep %>%
 
 msleep %>%
   select(genus, bodywt) %>%
-  mutate(bodywt = round(bodywt*2.20462))
+  mutate(bodywt = round(bodywt*2.20462, digits = 2))
 
 msleep %>%
   select(genus, sleep_total, awake) %>%
-  mutate_each(funs(./24), sleep_total, awake)
+  mutate_each(funs(./24), sleep_total, awake) %>%
+  arrange(desc(sleep_total))
 
 msleep %>%
   select(genus, sleep_total, awake) %>%
@@ -91,19 +99,17 @@ msleep %>%
   arrange(sleep_total, awake, genus) %>%
   rename(prop_sleep = sleep_total)
 
-
 #### tidyr --------------------------------------------------------------------#
 
 monkeys <- paste(sample(1:20), c(rep("ES", 10), rep("MG", 10)), sep = "_")
 
 monkey_wt <- data_frame(individual = monkeys,
-                        "2013/01/01" = rnorm(20, 5, sd = 1),
-                        "2014/01/14" = rnorm(20, 7, sd = 1.5),
-                        "2015/02/02" = rnorm(20, 10, sd = 2))
+                        "2013/01/01" = rnorm(20, 5, 1),
+                        "2014/01/14" = rnorm(20, 7, 1.5),
+                        "2015/02/02" = rnorm(20, 10, 2))
 
 monkey_wt
 
-library(magrittr)
 library(tidyr)
 
 monkey_wt %<>%

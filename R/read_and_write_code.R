@@ -5,22 +5,23 @@ morfo_excel <- "../data/dados_morfologicos.xlsx"
 
 excel_sheets(morfo_excel)
 
-janeiro <- read_excel(morfo_excel, na = "NA")
+janeiro <- read_excel(morfo_excel, 1, na = "NA")
+head(janeiro)
 
 ## base R
 
 # write the janeiro data.frame to a file
 # csv
-write.csv(janeiro, "janeiro.csv")
+write.csv(janeiro, "../data/janeiro.csv")
 
 # tab delimited
-write.table(janeiro, "janeiro.txt", sep = "\t")
+write.table(janeiro, "../data/janeiro.txt", sep = "\t")
 
 # space delimited
-write.table(janeiro, "janeiro.txt")
+write.table(janeiro, "../data/janeiro.txt")
 
 # read it back
-janeiro <- read.table("janeiro.txt")
+janeiro <- read.table("../data/janeiro.txt")
 
 # check the classes of each column with:
 sapply(janeiro, class)
@@ -33,10 +34,10 @@ sapply(janeiro, class)
 library(readr)
 
 # write the janeiro data.frame to a file
-write_csv(janeiro, "janeiro.csv")
+write_csv(janeiro, "../data/janeiro.csv")
 
 # read it back
-janeiro <- read_csv("janeiro.csv")
+janeiro <- read_csv("../data/janeiro.csv")
 
 # check the classes of each column with:
 sapply(janeiro, class)
@@ -44,7 +45,7 @@ sapply(janeiro, class)
 # readr never converts strings into factors
 
 # write the janeiro data.frame as a tab-delimited file
-write_delim(janeiro, "janeiro.txt", delim = "\t")
+write_delim(janeiro, "../data/janeiro.txt", delim = "\t")
 
 # read directly from the web
 # Gencode mouse gene annotation file
@@ -56,10 +57,10 @@ mouse_annot <- read_delim(ftp_gtf, delim = "\t", comment = "##", col_names = FAL
 library(data.table)
 
 # csv
-janeiro <- fread("janeiro.csv")
+janeiro <- fread("../data/janeiro.csv")
 
 # tab
-janeiro <- fread("janeiro.txt") 
+janeiro <- fread("../data/janeiro.txt") 
 
 # notice that fread() guesses the separator correctly
 # check the class of janeiro

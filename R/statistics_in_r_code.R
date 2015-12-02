@@ -100,7 +100,7 @@ wilcox.test(nonchilled, chilled, data = plant_co2, paired = TRUE)
 
 ?t.test
 
-t.test(intake, mu = 1800, conf.level = 0.99)
+t.test(intake, mu = 1800, conf.level = 0.9)
 t.test(expend~sex, data = energy, var.equal = TRUE)
 
 my_t_test <- t.test(intake, mu = 1800)

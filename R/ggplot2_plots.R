@@ -12,22 +12,22 @@ weather_data <-
   gather(variavel, valor, -(local:mes)) %>%
   separate(variavel, c("variavel", "unidade"),
            sep = "_\\(|\\)_", extra = "drop") %>%
-  mutate(mes = factor(mes, levels = unique(mes)))
-  filter(weather_data, variavel == "precipitação")
+  mutate(mes = factor(mes, levels = unique(mes))) %>%
+  filter(variavel == "precipitação")
 
-ylabel <- weather_data %$% paste(variavel[1], "(mm)")
-
+png("../data/precipitacao.png", width = 12, height = 8, units = "in", res = 300)
 ggplot(data = weather_data, aes(x = mes, y = valor, group = local, color = local)) +
   stat_summary(fun.data = mean_cl_boot, geom = "point", size = 4) +
   stat_summary(fun.data = mean_cl_boot, geom = "errorbar") +
   stat_summary(fun.data = mean_cl_boot, geom = "line", size = 1.1) +
   scale_color_fivethirtyeight() +
-  ylab(ylabel) +
+  ylab("precipitação (mm)") +
+  theme_bw() +
   theme(axis.title = element_text(size = 14),
         axis.text = element_text(size = 10),
         legend.text = element_text(size = 14),
         legend.title = element_text(size = 14))
-
+dev.off()
 
 ### dados morfologicos
 
@@ -47,12 +47,6 @@ p <-
         axis.title = element_text(size = 14),
         legend.text = element_text(size = 14),
         legend.title = element_text(size = 14)) 
-
-p_pos <-
-  ggplot_build(p)$data[[3]] %>%
-  dplyr::group_by(x) %>%
-  dplyr::summarise(y = min(y), ymax = max(ymax)) %$%
-  {ymax + min(y)}
 
 p_vals <- 
   morpho_data %>%

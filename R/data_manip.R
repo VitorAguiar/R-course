@@ -5,10 +5,11 @@ library(stringr)
 library(tidyr)
 
 header <- 
-  scan("~/mouse_500k_snps.vcf", what = "character", sep = "\n", nlines = 100) %>%
+  scan("../data/mouse_500k_snps.vcf", what = "character", sep = "\n", nlines = 100) %>%
   .[grep("^##", .)]
 
-mouse_vcf <- fread("~/mouse_500k_snps.vcf", header = TRUE, skip = length(header))
+mouse_vcf <- fread("../data/mouse_500k_snps.vcf", header = TRUE, 
+                   skip = length(header))
 
 dim(mouse_vcf)
 
@@ -39,7 +40,7 @@ mouse_vcf %>% count(`129P2`)
 lapply(names(mouse_vcf)[-c(1:3)], 
        function(i) count_(mouse_vcf, paste0("`", i, "`")))
 
-mouse_vcf %<>% tidyr::gather(individual, genotype, `129P2`:WSBEiJ)
+mouse_vcf %<>% gather(individual, genotype, `129P2`:WSBEiJ)
 
 mouse_vcf
 

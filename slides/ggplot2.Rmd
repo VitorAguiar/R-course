@@ -27,7 +27,7 @@ sapply(anscombe, mean)
 # variance
 sapply(anscombe, var)
 
-# correlation x-y
+# correlation x y
 mapply(cor, anscombe[1:4], anscombe[5:8])
 
 # linear regression line
@@ -117,58 +117,34 @@ ggplot(data, aes(x, y)) + geom
 str(iris)
 ```
 
----
+# Difference between the base R plot system and ggplot2
 
-```{r eval = FALSE}
-ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width)) +
-  geom_point()
-
-ggplot(data = iris) +
-  aes(x = Petal.Length, y = Petal.Width) +
-  geom_point()
-
-ggplot(data = iris) +
-  layer(mapping = aes(x = Petal.Length, y = Petal.Width), 
-        geom = "point", stat = "identity", position = "identity", 
-        params = list(na.rm = FALSE))
-  
-ggplot(iris, aes(x = Petal.Length, y = Petal.Width)) + 
-  layer(geom = "point", stat = "identity", position = "identity", 
-        params = list(na.rm = FALSE))
-```
+# Scatterplot
 
 ---
-
-```{r}
-ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width)) +
-  geom_point()
-```
-
-## Difference between the base R plot system and ggplot2
-
-## Scatterplot
 
 ```{r}
 with(iris, plot(Sepal.Length, Petal.Length))
+```
 
+---
+
+```{r}
 ggplot(iris, aes(Sepal.Length, Petal.Length)) + 
   geom_point()
 ```
 
-## Multiple histograms
+# Multiple histograms 
 
-```{r}
+## { .smaller}
+```{r fig.width=5, fig.align='center'}
 par(mfrow = c(3, 1))
-with(subset(iris, Species == "setosa"), hist(Sepal.Length, col = "red"))
-with(subset(iris, Species == "versicolor"), hist(Sepal.Length, col = "green"))
-with(subset(iris, Species == "virginica"), hist(Sepal.Length, col = "blue"))
-
-ggplot(iris, aes(Sepal.Length, fill = Species)) +
-  geom_histogram(binwidth = 0.5, color = "black") +
-  facet_wrap(~Species, ncol = 1)
+with(subset(iris, Species == "setosa"), hist(Sepal.Length, col = "red", main = "setosa"))
+with(subset(iris, Species == "versicolor"), hist(Sepal.Length, col = "green", main = "versicolor"))
+with(subset(iris, Species == "virginica"), hist(Sepal.Length, col = "blue", main = "virginica"))
 ```
 
-## With ggplot2:
+## With ggplot2: { .smaller}
 
 ```{r}
 ggplot(iris, aes(x = Sepal.Length, y = ..density.., fill = Species)) +
@@ -178,7 +154,7 @@ ggplot(iris, aes(x = Sepal.Length, y = ..density.., fill = Species)) +
 
 # The ggplot2 advantages are not clear?
 
-## automatic coloring and legends
+## automatic colors and legends
 
 ```{r}
 ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) +
@@ -212,34 +188,28 @@ ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) +
 
 # geoms
 
-## smooth
+## smooth { .smaller}
 
 ```{r}
 ggplot(iris, aes(Sepal.Length, Petal.Length)) +
   geom_point(size = 4) +
-  geom_smooth()
+  geom_smooth(method = lm)
+```
 
+---
+
+```{r}
 ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) +
-  geom_point(size = 4) +
-  geom_smooth()
-
-ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) +
-  geom_point(size = 4) +
-  geom_smooth(aes(group = 1))
-
-ggplot(iris, aes(Sepal.Length, Petal.Length)) +
   geom_point(size = 4) +
   geom_smooth(method = lm)
+```
 
-library(mgcv)
-ggplot(iris, aes(Sepal.Length, Petal.Length)) +
-  geom_point(size = 4) +
-  geom_smooth(method = gam, formula = y ~ s(x))
+---
 
-library(MASS)
-ggplot(iris, aes(x = Sepal.Length, y = Petal.Length)) +
+```{r}
+ggplot(iris, aes(Sepal.Length, Petal.Length, color = Species)) +
   geom_point(size = 4) +
-  geom_smooth(method = "rlm")
+  geom_smooth(aes(group = 1), method = lm)
 ```
 
 ## jitter and boxplot
@@ -247,10 +217,18 @@ ggplot(iris, aes(x = Sepal.Length, y = Petal.Length)) +
 ```{r}
 ggplot(iris, aes(Species, Petal.Length, color = Species)) +
   geom_jitter()
+```
 
+---
+
+```{r}
 ggplot(iris, aes(Species, Petal.Length*Petal.Width, color = Species)) +
   geom_jitter()
+```
 
+---
+
+```{r}
 ggplot(iris, aes(Species, Petal.Length*Petal.Width, fill = Species)) +
   geom_boxplot()
 ```
@@ -260,47 +238,79 @@ ggplot(iris, aes(Species, Petal.Length*Petal.Width, fill = Species)) +
 ```{r}
 ggplot(iris, aes(Petal.Length)) + 
   geom_histogram(binwidth = .2) 
+```
 
+---
+
+```{r}
 ggplot(iris, aes(Petal.Length, fill = Species)) + 
   geom_histogram(binwidth = .1) 
+```
 
+---
+
+```{r}
 ggplot(iris, aes(Petal.Length, fill = Species)) + 
   geom_histogram(aes(y = ..density..), binwidth = .1) 
+```
 
+---
+
+```{r}
 # Density smooth
 ggplot(iris, aes(Petal.Length, fill = Species)) + 
   geom_density(alpha = .7) +
   theme_bw()
 ```
 
-## bar
+## bar { .smaller}
 
 ```{r}
 ggplot(msleep, aes(order, fill = vore)) + 
-  geom_bar() + 
-  theme(legend.position = "bottom", 
-        axis.text.x = element_text(angle = 90, hjust = 1))
+  geom_bar() +
+  xlab("") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-```{r eval=FALSE, echo=FALSE}
-ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar()
-ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar(position = "stack")
+# positioning in bar plots
 
-ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar(position = "fill")
-ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar(position = "dodge")
+---
+
+```{r}
+ggplot(dplyr::filter(msleep, !is.na(conservation)), 
+       aes(vore, fill = conservation)) + 
+  geom_bar(position = "stack")
 ```
 
-## text
+---
+
+```{r}
+ggplot(dplyr::filter(msleep, !is.na(conservation)), 
+       aes(vore, fill = conservation)) + 
+  geom_bar(position = "fill")
+```
+
+---
+
+```{r}
+ggplot(dplyr::filter(msleep, !is.na(conservation)), 
+       aes(vore, fill = conservation)) + 
+  geom_bar(position = "dodge")
+```
+
+## text { .smaller}
 
 ```{r}
 ggplot(msleep, aes(bodywt, sleep_total, label = genus, color = vore)) + 
-  geom_text() + 
-  scale_x_log10()
+  geom_text(size = 3) +
+  scale_x_log10() +
+  theme_bw() +  
+  ylab("sleep (hours)")
 ```
 
 # faceting
 
---- 
+## { .smaller} 
 
 - 1d: `facet_wrap()`
 - 2d: `facet_grid()`
@@ -312,12 +322,6 @@ ggplot(iris, aes(Petal.Length, fill = Species)) +
   theme_bw()
 ```
 
-## margins
-
-```{r}
-
-```
-
 ## more themes from the ggthemes package
 
 ```{r}
@@ -326,26 +330,33 @@ p <-
   geom_point()
 ```
 
-##
+---
 
 ```{r}
-p + theme_wsj()
+p
 ```
 
 ##
 
 ```{r}
-p + theme_fivethirtyeight()
+p + scale_color_wsj() + theme_wsj()
 ```
 
 ##
 
 ```{r}
-p + theme_economist()
+p + scale_color_fivethirtyeight() + theme_fivethirtyeight()
+```
+
+##
+
+```{r}
+p + scale_color_economist() + theme_economist()
 ```
 
 ## lines { .smaller}
-```{r fig.height=3.5, fig.width=7, fig.align='center'}
+
+```{r fig.height=3.2, fig.width=6.4, fig.align='center'}
 # allele frequency
 f <- seq(0.05, 0.95, by = 0.05)
 
@@ -368,7 +379,8 @@ ggplot(data = msleep, aes(x = brainwt, y = bodywt, color = vore)) +
 ---
 
 ```{r}
-ggplot(data = msleep, aes(x = log10(brainwt), y = log10(bodywt), color = vore)) + 
+ggplot(data = msleep, aes(x = log10(brainwt), y = log10(bodywt), 
+                          color = vore)) + 
   geom_point()
 ```
 
@@ -398,18 +410,23 @@ ggplot(data = msleep, aes(x = brainwt, y = bodywt, color = vore)) +
 
 ## RColorBrewer
 
-```{r}
+```{r fig.height=7}
 RColorBrewer::display.brewer.all()
 ```
 
 ## setting vs. mapping
 
-```{r echo=FALSE, eval=FALSE}
+```{r}
+ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, 
+                        color = "darkblue")) +
+  geom_point()
+```
+
+---
+
+```{r}
 ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width)) +
   geom_point(color = "darkblue")
-
-ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = "darkblue")) +
-  geom_point()
 ```
 
 ---
@@ -426,8 +443,7 @@ ggplot(data = msleep, aes(x = brainwt, y = bodywt, color = vore)) +
 
 ---
 
-```{r echo=FALSE}
-
+```{r echo=FALSE, fig.width=8}
 source("../R/plot_funs.R")
 
 weather_data <- 
@@ -442,10 +458,10 @@ plot_weather(dplyr::filter(weather_data, variavel == "precipitação"))
 
 ---
 
-```{r echo=FALSE}
-morpho_data <- readr::read_csv("../data/dados_morfologicos.csv")
-
-plot_morpho(dplyr::filter(morpho_data, variavel == "altura"), unit = "cm")
+```{r echo=FALSE, fig.width=9}
+readr::read_csv("../data/dados_morfologicos.csv") %>%
+dplyr::filter(variavel == "altura") %>%
+plot_morpho(unit = "cm")
 ```
 
 # Hands on
