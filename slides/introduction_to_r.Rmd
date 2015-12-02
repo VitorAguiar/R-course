@@ -278,6 +278,7 @@ function(x) do_something
 
 ## commom built-in functions
 
+|             |            |            |
 |:-----------:|:----------:|:----------:|
 |sum()        |str()       |rnorm()     |
 |log()        |summary()   |rbinom()    |
@@ -404,7 +405,6 @@ http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:gbmam93.csv
 
 And apply functions to rows and columns using the function apply
 
-
 # Packages
 
 -----
@@ -438,14 +438,3 @@ sessionInfo()
 - do not save history or your environment
     - rerun analysis from script
 - use a version control system
-
-
-for (n in 1:10) {
-  if (n < 5) {
-    print(n)
-  } else {
-    print(n*100)
-  }
-}
-
-

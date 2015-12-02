@@ -12,7 +12,8 @@ Why use a programming language?
     -   easy to maintain and track changes
 -   allows you to think more about your analysis
 -   allows custom analyses
-    -   existing software can only answer questions that have already been posed
+    -   existing software can only answer questions that have already
+        been posed
 
 Why R?
 ------
@@ -36,7 +37,8 @@ demo: Rstudio
 
 ------------------------------------------------------------------------
 
-> *"[In R] Every thing that exists is an object. Everything that happens is a function call."*
+> *"[In R] Every thing that exists is an object. Everything that happens
+> is a function call."*
 
 > -- <cite>John Chambers</cite>
 
@@ -48,11 +50,32 @@ Data structures
 
 ------------------------------------------------------------------------
 
-| dimension |  Homogeneous  | Heterogeneous |
-|:---------:|:-------------:|:-------------:|
-|     1d    | atomic vector |      List     |
-|     2d    |     matrix    |   data frame  |
-|     nd    |     array     |               |
+<table>
+<thead>
+<tr class="header">
+<th align="center">dimension</th>
+<th align="center">Homogeneous</th>
+<th align="center">Heterogeneous</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1d</td>
+<td align="center">atomic vector</td>
+<td align="center">List</td>
+</tr>
+<tr class="even">
+<td align="center">2d</td>
+<td align="center">matrix</td>
+<td align="center">data frame</td>
+</tr>
+<tr class="odd">
+<td align="center">nd</td>
+<td align="center">array</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
 
 **contructor functions:**
 
@@ -99,70 +122,97 @@ operators and functions
 operators
 ---------
 
-``` r
-x + y
-x - y 
-x * y
-x / y
-x ^ y
-x %% y
-x %/% y
-x %*% y
-x == y
-x != y  
-x > y
-x < y
-x >= y
-x <= y
-x | y
-x & y
-x %in% y
+    x + y
+    x - y 
+    x * y
+    x / y
+    x ^ y
+    x %% y
+    x %/% y
+    x %*% y
+    x == y
+    x != y  
+    x > y
+    x < y
+    x >= y
+    x <= y
+    x | y
+    x & y
+    x %in% y
 
-?Syntax  
-```
+    ?Syntax  
 
 Functions
 ---------
 
-``` r
-fun <- function(x) do_something
-```
+    fun <- function(x) do_something
 
 Anonymous functions:
 
-``` r
-function(x) do_something
-```
+    function(x) do_something
 
 commom built-in functions
 -------------------------
 
-|:--------:|:---------:|:--------:|
-|   sum()  |   str()   |  rnorm() |
-|   log()  | summary() | rbinom() |
-|   exp()  |    lm()   |  runif() |
-|  mean()  |  table()  |  rbeta() |
-| median() |   head()  | rgamma() |
-|   var()  |   tail()  | sample() |
-|   sd()   |   dim()   |   rep()  |
-|  sqrt()  |  subset() |          |
+<table>
+<tbody>
+<tr class="odd">
+<td align="center">sum()</td>
+<td align="center">str()</td>
+<td align="center">rnorm()</td>
+</tr>
+<tr class="even">
+<td align="center">log()</td>
+<td align="center">summary()</td>
+<td align="center">rbinom()</td>
+</tr>
+<tr class="odd">
+<td align="center">exp()</td>
+<td align="center">lm()</td>
+<td align="center">runif()</td>
+</tr>
+<tr class="even">
+<td align="center">mean()</td>
+<td align="center">table()</td>
+<td align="center">rbeta()</td>
+</tr>
+<tr class="odd">
+<td align="center">median()</td>
+<td align="center">head()</td>
+<td align="center">rgamma()</td>
+</tr>
+<tr class="even">
+<td align="center">var()</td>
+<td align="center">tail()</td>
+<td align="center">sample()</td>
+</tr>
+<tr class="odd">
+<td align="center">sd()</td>
+<td align="center">dim()</td>
+<td align="center">rep()</td>
+</tr>
+<tr class="even">
+<td align="center">sqrt()</td>
+<td align="center">subset()</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
 
 getting help
 ------------
 
-``` r
-help(mean)
+    help(mean)
 
-?mean
+    ?mean
 
-?"["
+    ?"["
 
-??"principal component"
+    ??"principal component"
 
-apropos("mean")
+    apropos("mean")
 
-help(package="dplyr")
-```
+    help(package="dplyr")
 
 apply
 -----
@@ -173,19 +223,17 @@ apply
 -   tapply
 -   mapply
 
-``` r
-sapply(iris[1:4], mean)
-```
+<!-- -->
+
+    sapply(iris[1:4], mean)
 
     Sepal.Length  Sepal.Width Petal.Length  Petal.Width 
         5.843333     3.057333     3.758000     1.199333 
 
 Anonymous functions are very useful in `apply` functions:
 
-``` r
-iris_by_species <- split(iris, iris$Species)
-lapply(iris_by_species, function(x) summary(lm(Sepal.Length~Sepal.Width, data = x))$r.squared)
-```
+    iris_by_species <- split(iris, iris$Species)
+    lapply(iris_by_species, function(x) summary(lm(Sepal.Length~Sepal.Width, data = x))$r.squared)
 
     $setosa
     [1] 0.5513756
@@ -202,18 +250,18 @@ flow control structures
 -   for
 -   while
 
-``` r
-for (iterator in times) do something
-```
+<!-- -->
+
+    for (iterator in times) do something
 
 -   if
 -   else
 
-``` r
-x <- 10
-if (x > 0) y <- 1 else y <- 0
-y
-```
+<!-- -->
+
+    x <- 10
+    if (x > 0) y <- 1 else y <- 0
+    y
 
     [1] 1
 
@@ -225,37 +273,54 @@ Vectorization
 
 vectorized computations operate on all elements of a vector
 
-``` r
-(1:10) ^ 2
-```
+    (1:10) ^ 2
 
      [1]   1   4   9  16  25  36  49  64  81 100
 
-``` r
-1:10 * c(2, 3)
-```
+    1:10 * c(2, 3)
 
      [1]  2  6  6 12 10 18 14 24 18 30
 
 datasets
 --------
 
-``` r
-library(help="datasets")
-```
+    library(help="datasets")
 
 data in and out
 ===============
 
 ------------------------------------------------------------------------
 
-|     READ     |     WRITE     |
-|:------------:|:-------------:|
-| read.table() | write.table() |
-|  read.csv()  |  write.csv()  |
-|  read.csv2() |  write.csv2() |
-|  readLines() |  writeLines() |
-|   readRDS()  |   saveRDS()   |
+<table>
+<thead>
+<tr class="header">
+<th align="center">READ</th>
+<th align="center">WRITE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">read.table()</td>
+<td align="center">write.table()</td>
+</tr>
+<tr class="even">
+<td align="center">read.csv()</td>
+<td align="center">write.csv()</td>
+</tr>
+<tr class="odd">
+<td align="center">read.csv2()</td>
+<td align="center">write.csv2()</td>
+</tr>
+<tr class="even">
+<td align="center">readLines()</td>
+<td align="center">writeLines()</td>
+</tr>
+<tr class="odd">
+<td align="center">readRDS()</td>
+<td align="center">saveRDS()</td>
+</tr>
+</tbody>
+</table>
 
 Hands on!
 =========
@@ -264,22 +329,18 @@ Choose a dataset and try to subset, apply functions, etc
 
 e.g.:
 
-``` r
-head(iris)
-str(iris)
-summary(iris)
-sum(iris$Petal.Length)
-mean(iris$Sepal.Width)
-tapply(iris$Petal.Length, iris$Species, mean)
-sapply(subset(iris, select = -Species), mean)
-```
+    head(iris)
+    str(iris)
+    summary(iris)
+    sum(iris$Petal.Length)
+    mean(iris$Sepal.Width)
+    tapply(iris$Petal.Length, iris$Species, mean)
+    sapply(subset(iris, select = -Species), mean)
 
 Generate data and apply the functions we've seen:
 
-``` r
-mean(rnorm(100) > 0)
-table(rbinom(100, 1, 0.5))
-```
+    mean(rnorm(100) > 0)
+    table(rbinom(100, 1, 0.5))
 
 Read the data at:
 
@@ -296,22 +357,16 @@ Packages
 
 January 2015: 6000 packages on CRAN
 
-``` r
-install.packages("PackageName")
-library("PackageName")
-```
+    install.packages("PackageName")
+    library("PackageName")
 
 **GitHub:**
 
-``` r
-devtools::install_github("UserName/PackageName")
-```
+    devtools::install_github("UserName/PackageName")
 
 ------------------------------------------------------------------------
 
-``` r
-sessionInfo()
-```
+    sessionInfo()
 
     R version 3.2.1 (2015-06-18)
     Platform: x86_64-apple-darwin13.4.0 (64-bit)
@@ -339,5 +394,3 @@ Good practices
 -   do not save history or your environment
     -   rerun analysis from script
 -   use a version control system
-
-for (n in 1:10) { if (n \< 5) { print(n) } else { print(n\*100) } }
