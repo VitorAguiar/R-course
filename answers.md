@@ -84,7 +84,7 @@
         15   Crew  Adult   Male            431.0
         16   Crew  Adult Female             11.5
 
-        # proportion per Class
+        # percentage per Class
         library(tidyr)
 
         Titanic %>% 

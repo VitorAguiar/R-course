@@ -61,7 +61,7 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
       group_by(Class, Age, Sex) %>%
       summarise(average_survived = mean(Freq))
     
-    # proportion per Class
+    # percentage per Class
     library(tidyr)
     
     Titanic %>% 
