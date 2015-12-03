@@ -25,53 +25,53 @@
 
 6.  Use the data below to create the data.frame `df2`:
 
-<table>
-<thead>
-<tr class="header">
-<th align="center">ind</th>
-<th align="center">sex</th>
-<th align="center">control</th>
-<th align="center">trt1</th>
-<th align="center">trt2</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">1</td>
-<td align="center">m</td>
-<td align="center">7.9</td>
-<td align="center">12.3</td>
-<td align="center">10.7</td>
-</tr>
-<tr class="even">
-<td align="center">2</td>
-<td align="center">f</td>
-<td align="center">6.3</td>
-<td align="center">10.6</td>
-<td align="center">11.1</td>
-</tr>
-<tr class="odd">
-<td align="center">3</td>
-<td align="center">f</td>
-<td align="center">9.5</td>
-<td align="center">13.1</td>
-<td align="center">13.8</td>
-</tr>
-<tr class="even">
-<td align="center">4</td>
-<td align="center">m</td>
-<td align="center">11.5</td>
-<td align="center">13.4</td>
-<td align="center">12.9</td>
-</tr>
-</tbody>
-</table>
+    <table>
+    <thead>
+    <tr class="header">
+    <th align="center">ind</th>
+    <th align="center">sex</th>
+    <th align="center">control</th>
+    <th align="center">trt1</th>
+    <th align="center">trt2</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="odd">
+    <td align="center">1</td>
+    <td align="center">m</td>
+    <td align="center">7.9</td>
+    <td align="center">12.3</td>
+    <td align="center">10.7</td>
+    </tr>
+    <tr class="even">
+    <td align="center">2</td>
+    <td align="center">f</td>
+    <td align="center">6.3</td>
+    <td align="center">10.6</td>
+    <td align="center">11.1</td>
+    </tr>
+    <tr class="odd">
+    <td align="center">3</td>
+    <td align="center">f</td>
+    <td align="center">9.5</td>
+    <td align="center">13.1</td>
+    <td align="center">13.8</td>
+    </tr>
+    <tr class="even">
+    <td align="center">4</td>
+    <td align="center">m</td>
+    <td align="center">11.5</td>
+    <td align="center">13.4</td>
+    <td align="center">12.9</td>
+    </tr>
+    </tbody>
+    </table>
 
-1.  Convert `df2` to the long format with the function `gather` from the
+7.  Convert `df2` to the long format with the function `gather` from the
     package `tidyr`. The columns `control`, `trt1` and `trt2` will be
     converted to 2 columns: 1) `treatment`, which will indicate the kind
     of condition in the experiment, and 2) `value` which will store the
     measurements for each observation.
 
-2.  Make a boxplot with `ggplot2` with the variable `sex` on the x axis,
+8.  Make a boxplot with `ggplot2` with the variable `sex` on the x axis,
     `value` on the y axis, and fill by `condition`.
