@@ -167,8 +167,8 @@ First plot:
 ```{r}
 p_a <- 
   ggplot(data = dat, aes(x1, y1)) + 
-  geom_point(size = 3, alpha = .65, shape = 17, fill = "black") + 
-  geom_smooth(method = "lm", se = FALSE) +
+  geom_point(size = 3, shape = 17) + 
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
   xlab("Log(Patch size)(ha)") +
   ylab("Euclidean distances") + 
   labs(title = "a") + 
