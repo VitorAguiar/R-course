@@ -20,12 +20,52 @@
 5.  Create a data.frame from the data `Titanic` (already loaded in your
     R session) using the function `as.data.frame()`. Group the data by
     different variables (or multiple variables at once) and take the
-    average frequency of survivors in the grouped data.
+    average frequency of survivors in the grouped data (use the package
+    `dplyr`)
 
-6.  Execute the following code to create the data.frame `df2`:
+6.  Use the data below to create the data.frame `df2`:
 
-df2 \<- read.table(header=TRUE, text=" ind sex control trt1 trt2 1 m 7.9
-12.3 10.7 2 f 6.3 10.6 11.1 3 f 9.5 13.1 13.8 4 m 11.5 13.4 12.9 ")
+<table>
+<thead>
+<tr class="header">
+<th align="center">ind</th>
+<th align="center">sex</th>
+<th align="center">control</th>
+<th align="center">trt1</th>
+<th align="center">trt2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">m</td>
+<td align="center">7.9</td>
+<td align="center">12.3</td>
+<td align="center">10.7</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">f</td>
+<td align="center">6.3</td>
+<td align="center">10.6</td>
+<td align="center">11.1</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">f</td>
+<td align="center">9.5</td>
+<td align="center">13.1</td>
+<td align="center">13.8</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">m</td>
+<td align="center">11.5</td>
+<td align="center">13.4</td>
+<td align="center">12.9</td>
+</tr>
+</tbody>
+</table>
 
 1.  Convert `df2` to the long format with the function `gather` from the
     package `tidyr`. The columns `control`, `trt1` and `trt2` will be
