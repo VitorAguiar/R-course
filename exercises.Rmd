@@ -28,4 +28,4 @@ output:
 
 7. Convert `df2` to the long format with the function `gather` from the package `tidyr`. The columns `control`, `trt1` and `trt2` will be converted to 2 columns: 1) `treatment`, which will indicate the kind of condition in the experiment, and 2) `value` which will store the measurements for each observation.
 
-8. Make a boxplot with `ggplot2` with the variable `sex` on the x axis, `value` on the y axis, and fill by `condition`.
+8. Make a boxplot with `ggplot2` with the variable `sex` on the x axis, `value` on the y axis, and fill by `treatment`.

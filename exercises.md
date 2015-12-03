@@ -75,4 +75,4 @@
     measurements for each observation.
 
 8.  Make a boxplot with `ggplot2` with the variable `sex` on the x axis,
-    `value` on the y axis, and fill by `condition`.
+    `value` on the y axis, and fill by `treatment`.
