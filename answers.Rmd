@@ -71,7 +71,7 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
       mutate(prop_survived = Yes/sum(Yes, No)) %>%
       ungroup() %>%
       group_by(Class) %>%
-      summarise(mean = mean(prop_survived, na.rm = TRUE))
+      summarise("survived(%)" = round(mean(prop_survived, na.rm = TRUE)*100, 2))
     ```
 
 6. Use the data below to create the data.frame `df2`

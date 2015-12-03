@@ -94,16 +94,16 @@
           mutate(prop_survived = Yes/sum(Yes, No)) %>%
           ungroup() %>%
           group_by(Class) %>%
-          summarise(mean = mean(prop_survived, na.rm = TRUE))
+          summarise("survived(%)" = round(mean(prop_survived, na.rm = TRUE)*100, 2))
 
         Source: local data frame [4 x 2]
 
-           Class      mean
-          (fctr)     (dbl)
-        1    1st 0.8244841
-        2    2nd 0.7358871
-        3    3rd 0.3363475
-        4   Crew 0.5461515
+           Class survived(%)
+          (fctr)       (dbl)
+        1    1st       82.45
+        2    2nd       73.59
+        3    3rd       33.63
+        4   Crew       54.62
 
 6.  Use the data below to create the data.frame `df2`
 
