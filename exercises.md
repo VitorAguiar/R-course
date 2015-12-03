@@ -13,9 +13,10 @@
 
 4.  Read in the data [Levantamento em 3 caixetais do Estado de São
     Paulo](http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:caixeta.csv).
-    With `ggplot2`, make a plot of `h` vs. `cap`, faceting by
-    `local`~`parcela` with the `facet_grid` component. Try to use the
-    argument `margins = TRUE` in `facet_grid`.
+    With `ggplot2`, make a scatterplot of `h` vs. `cap`, faceting by
+    `local`~`parcela` using the `facet_grid()` component. Try to use the
+    argument `margins = TRUE` in `facet_grid()`. Add a
+    `geom_smooth(method = lm)`.
 
 5.  Create a data.frame from the data `Titanic` (already loaded in your
     R session) using the function `as.data.frame()`. Group the data by
