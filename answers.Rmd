@@ -3,8 +3,8 @@ title: "Exercise answers"
 author: ""
 date: "December 3, 2015"
 output: 
-    md_document:
-    variant: markdown_github
+md_document:
+variant: markdown_github
 ---
 
 ```{r global_options, include=FALSE}
@@ -13,86 +13,86 @@ knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
   
 1. Create a vector `simul_vec` of random numbers sampled from the distribution of your choice (Normal, Poisson, Binomial, etc).
 
-```{r}
-simul_vec <- rnorm(500)
-```
+    ```{r}
+    simul_vec <- rnorm(500)
+    ```
 
 2. Create a function that returns a list with the mean and the standard deviation of the object `simul_vec`.
 
-```{r}
-get_mean_sd <- function(x) {
-  list(mean = mean(x), sd = sd(x))
-}
-```
+    ```{r}
+    get_mean_sd <- function(x) {
+      list(mean = mean(x), sd = sd(x))
+    }
+    ```
 
 3. The function `rowMeans` returns the means of all rows in a data.frame. Create a function `sdMeans` that returns the sd of all rows (use the function `apply`). Read in the data [Mamiferos na Great Basin](http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:gbmam93.csv) and apply your function.
 
-```{r}
-mammals <- read.csv("http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:gbmam93.csv")
-
-sdMeans <- function(df) {
-  apply(df, 1, sd)
-}
-
-sdMeans(mammals)
-```
+    ```{r}
+    mammals <- read.csv("http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:gbmam93.csv")
+    
+    sdMeans <- function(df) {
+      apply(df, 1, sd)
+    }
+    
+    sdMeans(mammals)
+    ```
 
 4.  Read in the data [Levantamento em 3 caixetais do Estado de São Paulo](http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:caixeta.csv). With `ggplot2`, make a scatterplot of `h` vs. `cap`, faceting by `local`~`parcela` using the `facet_grid()` component. Try to use the argument `margins = TRUE` in `facet_grid()`. Add a `geom_smooth(method = lm)`.
 
-```{r fig.width=8}
-library(ggplot2)
-
-caixetas <- read.csv("http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:caixeta.csv")
-
-ggplot(caixetas, aes(h, cap)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  facet_grid(local ~ parcela, margins = TRUE) +
-  theme(axis.text.x = element_text(angle = 90))
-```
+    ```{r fig.width=8}
+    library(ggplot2)
+    
+    caixetas <- read.csv("http://ecologia.ib.usp.br/bie5782/lib/exe/fetch.php?media=dados:caixeta.csv")
+    
+    ggplot(caixetas, aes(h, cap)) +
+      geom_point() +
+      geom_smooth(method = "lm") +
+      facet_grid(local ~ parcela, margins = TRUE) +
+      theme(axis.text.x = element_text(angle = 90))
+    ```
 
 5. Create a data.frame from the data `Titanic` (already loaded in your R session) using the function `as.data.frame()`. Group the data by different variables (or multiple variables at once) and take the average frequency of survivors in the grouped data (use the package `dplyr`).
 
-```{r}
-library(dplyr)
-
-Titanic %>%
-  as.data.frame() %>%
-  group_by(Class, Age, Sex) %>%
-  summarise(average_survived = mean(Freq))
-
-# proportion per Class
-library(tidyr)
-
-Titanic %>% 
-  as.data.frame() %>%
-  spread(Survived, Freq) %>%
-  group_by(Class, Sex, Age) %>%
-  mutate(prop_survived = Yes/sum(Yes, No)) %>%
-  ungroup() %>%
-  group_by(Class) %>%
-  summarise(mean = mean(prop_survived, na.rm = TRUE))
-```
+    ```{r}
+    library(dplyr)
+    
+    Titanic %>%
+      as.data.frame() %>%
+      group_by(Class, Age, Sex) %>%
+      summarise(average_survived = mean(Freq))
+    
+    # proportion per Class
+    library(tidyr)
+    
+    Titanic %>% 
+      as.data.frame() %>%
+      spread(Survived, Freq) %>%
+      group_by(Class, Sex, Age) %>%
+      mutate(prop_survived = Yes/sum(Yes, No)) %>%
+      ungroup() %>%
+      group_by(Class) %>%
+      summarise(mean = mean(prop_survived, na.rm = TRUE))
+    ```
 
 6. Use the data below to create the data.frame `df2`
 
-```{r}
-df2 <- read.table(text = "ind	sex	control	trt1	trt2
-1	m	7.9	12.3	10.7
-2	f	6.3	10.6	11.1
-3	f	9.5	13.1	13.8
-4	m	11.5	13.4	12.9", header = TRUE)
-```
+    ```{r}
+    df2 <- read.table(text = "ind	sex	control	trt1	trt2
+    1	m	7.9	12.3	10.7
+    2	f	6.3	10.6	11.1
+    3	f	9.5	13.1	13.8
+    4	m	11.5	13.4	12.9", header = TRUE)
+    ```
 
 7. Convert `df2` to the long format with the function `gather` from the package `tidyr`. The columns `control`, `trt1` and `trt2` will be converted to 2 columns: 1) `treatment`, which will indicate the kind of condition in the experiment, and 2) `value` which will store the measurements for each observation.
 
-```{r}
-df2 <- df2 %>% gather(treatment, value, control:trt2) 
-```
+    ```{r}
+    df2 <- df2 %>% gather(treatment, value, control:trt2) 
+    ```
 
 8. Make a boxplot with `ggplot2` with the variable `sex` on the x axis, `value` on the y axis, and fill by `treatment`.
 
-```{r}
-ggplot(df2, aes(sex, value, fill = treatment)) +
-  geom_boxplot()
-```
+    ```{r}
+    ggplot(df2, aes(sex, value, fill = treatment)) +
+      geom_boxplot()
+    ```
