@@ -3,8 +3,8 @@ title: "Exercise answers"
 author: ""
 date: "December 3, 2015"
 output: 
-md_document:
-variant: markdown_github
+    md_document:
+    variant: markdown_github
 ---
 
 ```{r global_options, include=FALSE}
