@@ -1,0 +1,35 @@
+---
+title: "PCA in R"
+author: ""
+date: ""
+output: html_document
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, comment='')
+```
+
+```{r}
+head(iris)
+
+iris_pca <- prcomp(log(iris[1:4]), center = TRUE, scale. = TRUE) 
+
+iris_pca
+
+summary(iris_pca)
+
+# PC's 
+head(iris_pca$x)
+
+#devtools::install_github("vqv/ggbiplot")
+library(ggbiplot)
+
+ggbiplot(iris_pca, obs.scale = 1, var.scale = 1, groups = iris$Species, 
+         ellipse = TRUE, circle = TRUE) + 
+  scale_color_discrete(name = '')
+```
+
+Other functions:
+
+- `printcomp()` (stats)
+- `PCA()` (FactorMiner)
